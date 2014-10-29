@@ -133,8 +133,8 @@ $ns.update = function () {
 };
 
 //Maybe also try moving this to its own file
-$ns.test = function(body){
-	//Initialize Date and Body
+$ns.test = function(){
+	//Initialize Date
 	$const.date = '14.11.1987 01:50:26';
 
 	if ($const.date) {
@@ -156,10 +156,20 @@ $ns.test = function(body){
 
 	$processor.init();
 
-	$const.body = $moshier.body.moon;
+	var result = {};
 
-	$processor.calc(date, $const.body);
+	var bodies = ['sun', 'mercury', 'venus', 'moon', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'chiron', 'sirius'];
 
-	console.log($const.body.position.apparentLongitudeString);
+	for (var i = 0; i < bodies.length; i++) {
+		$const.body = $moshier.body[bodies[i]];
+		$processor.calc(date, $const.body);
+		result[bodies[i]] = $const.body.position.apparentLongitudeString;
+	}
+
+	// $const.body = $moshier.body.moon;
+
+	// $processor.calc(date, $const.body);
+
+	console.log(result);
 
 };
