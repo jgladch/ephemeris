@@ -215,12 +215,12 @@ $ns.body = {
 
 $ns.body.init = function () {
 	for (var key in this) {
-		if (this.hasOwnProperty (key) && key != 'init') {
+		if (this.hasOwnProperty(key) && key != 'init') {
 			// fill the 'key'
-			this [key].key = key;
+			this[key].key = key;
 			// fill the ptable for the body
-			if ($moshier.plan404.hasOwnProperty (key)) {
-				this [key].ptable = $moshier.plan404 [key];
+			if ($moshier.plan404.hasOwnProperty(key)) {
+				this[key].ptable = $moshier.plan404[key];
 			}
 		}
 	}

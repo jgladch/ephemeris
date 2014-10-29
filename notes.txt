@@ -1,0 +1,9 @@
+Notes:
+
+###Setting constants
+
+- Constants (in constant.js) are initialized with e.update(), which iterates through each 'textarea' and 'select' and sets that value to the 'id' of the 'textarea' or 'select' from whence it came
+
+  - Constants are set using the the id of the 'textarea' element
+
+- Date is parsed and set to $const.date

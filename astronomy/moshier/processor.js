@@ -3,10 +3,10 @@ $ns.processor = {};
 $ns.processor.calc = function (date, body) {
 	$const.body = body;
 
-	$moshier.julian.calc (date);
-	$moshier.delta.calc (date);
+	$moshier.julian.calc(date);
+	$moshier.delta.calc(date);
 
-	date.universalDate = $moshier.julian.toGregorian ({
+	date.universalDate = $moshier.julian.toGregorian({
 		julian: date.universal
 	});
 
@@ -19,7 +19,7 @@ $ns.processor.calc = function (date, body) {
 		(date.universalDate.seconds + date.universalDate.milliseconds / 1000)
 	;
 
-	// First to calculate the erath
+	// First to calculate the earth
 	$moshier.kepler.calc (date, $moshier.body.earth);
 
 	switch (body.key) {

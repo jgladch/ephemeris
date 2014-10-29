@@ -1,32 +1,37 @@
+//Gets current date and sets the 'Gregorian' field of index.html, then $e.update()
+//available in console as $e.load()
 $ns.load = function () {
-    var curDate = new Date ();
+	var curDate = new Date ();
 	var dateArea = document.getElementById ('$const.date');
-    dateArea.value = curDate.getDate () + '.' + (curDate.getMonth () + 1) + '.' + curDate.getFullYear () + ' ' +
-        curDate.getHours () + ':' + curDate.getMinutes () + ':' + curDate.getSeconds ()
-    ;
+	dateArea.value = curDate.getDate() + '.' + (curDate.getMonth() + 1) + '.' + curDate.getFullYear() + ' ' +
+	curDate.getHours() + ':' + curDate.getMinutes() + ':' + curDate.getSeconds();
 
-    $e.update ();
+	$e.update ();
 };
 
 $ns.update = function () {
-	var textAreas = document.body.getElementsByTagName ('textarea');
+	//Grabs array of all textareas on index.html
+	var textAreas = document.body.getElementsByTagName('textarea');
+	//Grabs array of all drop downs on index.html
 	var selects = document.body.getElementsByTagName ('select');
 	var classes, ids, value;
 	var i, j, key;
 
 	//$processor.test ();
 
-	// fill input
+	// INITIALIZE CONSTANTS
 	if (textAreas) {
 		for (i = 0; i < textAreas.length; i ++) {
-			ids = textAreas [i].getAttribute ('id');
+			ids = textAreas[i].getAttribute('id');
 			try {
-				eval ('' + ids + ' = "' + textAreas [i].value + '"');
+				//Weird pattern to evaluate the id attribute of the text areas with their values
+				//Used to set constants from the form fields
+				eval('' + ids + ' = "' + textAreas[i].value + '"');
 			} catch (exception) {
 			}
 		}
 	}
-
+	//Parses 'Gregorian' date field and splits into date components, sets date object & properties
 	if ($const.date) {
 		var tokens = $const.date.split (' ');
 
@@ -44,72 +49,77 @@ $ns.update = function () {
 		$const.date = date;
 	}
 
+
+	//Initializes constants in body and kepler
 	$processor.init ();
 
 	// fill input bodies
 	if (selects) {
-		for (i = 0; i < selects.length; i ++) {
-			classes = selects [i].getAttribute ('class');
-			ids = selects [i].getAttribute ('id');
+		for (i = 0; i < selects.length; i++) {
+			classes = selects[i].getAttribute ('class');
+			ids = selects[i].getAttribute('id');
 			if (classes) {
 				try {
-					var selector = eval ('(' + classes + ')');
-					if (!selects [i].innerHTML) {
+					var selector = eval('(' + classes + ')');
+					if (!selects[i].innerHTML) {
 						var selections = [];
 						for (key in selector) {
-							if (selector.hasOwnProperty (key) && selector [key].key == key && key != 'earth') {
-								selections.push ('<option label=' + key + '>' + key + '</option>');
+							if (selector.hasOwnProperty(key) && selector[key].key == key && key != 'earth') {
+								selections.push('<option label=' + key + '>' + key + '</option>');
 							}
 						}
-						selects [i].innerHTML = selections;
+						selects[i].innerHTML = selections;
 					}
-					eval (ids + ' = ' + classes + '.' + selects [i].value);
+					eval(ids + ' = ' + classes + '.' + selects[i].value);
 				} catch (exception) {
 				}
 			}
 		}
 	}
+	// debugger;
+	$processor.calc(date, $const.body);
 
-	$processor.calc (date, $const.body);
 
-	var info = document.getElementById ('info');
+	//COMMENTED REGIONS DON'T APPEAR TO DO ANYTHING
 
-	if (info) {
-		info.innerHTML =
-			'julian = ' + date.julian + ', ' +
-			'delta = ' + date.delta + '<br/>' +
-			'terrstrial = ' + date.terrestrial + '<br/>' +
-			'universal = ' + date.universal + ' - ' + (
-				date.universalDate.day + '.' +
-				date.universalDate.month + '.' +
-				date.universalDate.year + ' ' +
-				date.universalDate.hours + ':' +
-				date.universalDate.minutes + ':' +
-				date.universalDate.seconds + '.' +
-				date.universalDate.milliseconds
-			) + '' +
-			''
-		;
-	}
+	// var info = document.getElementById('info');
 
-	var ephemeris = document.getElementById ('ephemeris');
+	// if (info) {
+	// 	info.innerHTML =
+	// 		'julian = ' + date.julian + ', ' +
+	// 		'delta = ' + date.delta + '<br/>' +
+	// 		'terrstrial = ' + date.terrestrial + '<br/>' +
+	// 		'universal = ' + date.universal + ' - ' + (
+	// 			date.universalDate.day + '.' +
+	// 			date.universalDate.month + '.' +
+	// 			date.universalDate.year + ' ' +
+	// 			date.universalDate.hours + ':' +
+	// 			date.universalDate.minutes + ':' +
+	// 			date.universalDate.seconds + '.' +
+	// 			date.universalDate.milliseconds
+	// 		) + '' +
+	// 		''
+	// 	;
+	// }
 
-	if (ephemeris) {
-		ephemeris.innerHTML =
-			'<td>earth</td>' +
-			''
-		;
-	}
+	// var ephemeris = document.getElementById('ephemeris');
 
-	// fill output
+	// if (ephemeris) {
+	// 	ephemeris.innerHTML =
+	// 		'<td>earth</td>' +
+	// 		''
+	// 	;
+	// }
+
+	// MAKE CALCULATIONS AND FILL TEXTAREAS WITH OUTPUT
 	if (textAreas) {
 		for (i = 0; i < textAreas.length; i ++) {
-			classes = (textAreas [i].getAttribute ('class') || '').split (' ');
+			classes = (textAreas[i].getAttribute ('class') || '').split(' ');
 			for (j = 0; j < classes.length; j ++) {
 				try {
-					value = eval ('(' + classes [j] + ')');
+					value = eval('(' + classes [j] + ')');
 					if (value || value === 0) {
-						textAreas [i].value = value.join ? value.join ('\n') : value;
+						textAreas[i].value = value.join ? value.join ('\n') : value;
 						break;
 					}
 				} catch (exception) {
