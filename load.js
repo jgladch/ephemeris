@@ -53,7 +53,10 @@ $ns.update = function () {
 	//Initializes constants in body and kepler
 	$processor.init ();
 
-	// fill input bodies
+	// Check the 'body' selector
+	// If the selection exists in $moshier.body
+	// Set $const.body to $moshier.body.planet
+	// May be designed to handle multiple planets at once, not sure
 	if (selects) {
 		for (i = 0; i < selects.length; i++) {
 			classes = selects[i].getAttribute ('class');
@@ -127,4 +130,36 @@ $ns.update = function () {
 			}
 		}
 	}
+};
+
+//Maybe also try moving this to its own file
+$ns.test = function(body){
+	//Initialize Date and Body
+	$const.date = '14.11.1987 01:50:26';
+
+	if ($const.date) {
+		var tokens = $const.date.split (' ');
+
+		tokens [0] = tokens [0].split ('.');
+		tokens [1] = tokens [1].split (':');
+
+		date = {
+			day: parseFloat (tokens [0][0]),
+			month: parseFloat (tokens [0][1]),
+			year: parseFloat (tokens [0][2]),
+			hours: parseFloat (tokens [1][0]),
+			minutes: parseFloat (tokens [1][1]),
+			seconds: parseFloat (tokens [1][2])
+		};
+		$const.date = date;
+	}
+
+	$processor.init();
+
+	$const.body = $moshier.body.moon;
+
+	$processor.calc(date, $const.body);
+
+	console.log($const.body.position.apparentLongitudeString);
+
 };

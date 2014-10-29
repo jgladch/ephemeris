@@ -7,3 +7,8 @@ Notes:
   - Constants are set using the the id of the 'textarea' element
 
 - Date is parsed and set to $const.date
+
+
+###Planetary Elements
+
+- $moshier.body contains all information about each planet
